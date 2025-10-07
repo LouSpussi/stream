@@ -24,7 +24,7 @@
     <p id="viewerLink" style="margin-top: 10px;"></p>
   </div>
 
-  <iframe id="streamFrame" allow="display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
+  <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
 
   <script>
     function generateKey() {
@@ -41,7 +41,7 @@
       document.getElementById('viewerLink').innerHTML = `Viewer link: <a href="${viewUrl}" target="_blank">${viewUrl}</a>.`;
 
       const iframe = document.getElementById('streamFrame');
-      iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&resolution=${resolution}&fps=${fps}&proaudio&novideo&noaudio`;
+      iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&resolution=${resolution}&fps=${fps}&proaudio`;
       iframe.style.display = 'block';
     }
   </script>
