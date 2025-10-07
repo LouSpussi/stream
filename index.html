@@ -8,7 +8,7 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         button { padding: 10px 20px; margin: 10px; font-size: 16px; }
-        #viewerLink { margin-top: 20px; }
+        #viewerLink, #error { margin-top: 20px; color: red; }
         #video { width: 100%; max-width: 800px; }
     </style>
 </head>
@@ -16,33 +16,48 @@
     <h1>Simple Screenshare with VDO.Ninja</h1>
     <button onclick="startScreenshare()">Start Screenshare</button>
     <div id="viewerLink"></div>
+    <div id="error"></div>
     <video id="video" autoplay muted></video>
 
     <script>
         async function startScreenshare() {
+            const errorDiv = document.getElementById('error');
+            const viewerLinkDiv = document.getElementById('viewerLink');
+            errorDiv.innerText = '';
+            viewerLinkDiv.innerText = '';
+
             try {
+                // Request screen capture permission
+                const stream = await navigator.mediaDevices.getDisplayMedia({ 
+                    video: { 
+                        cursor: 'always' 
+                    }
+                });
+                
+                // Display local stream
+                document.getElementById('video').srcObject = stream;
+                
                 // Generate a random room name
                 const room = 'room_' + Math.random().toString(36).substr(2, 9);
                 
                 // Initialize VDO.Ninja source
                 const source = new VDO.Source();
                 
-                // Get screen stream
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                
-                // Display local stream
-                document.getElementById('video').srcObject = stream;
-                
                 // Publish stream to VDO.Ninja
                 await source.publish(stream, { room: room });
                 
                 // Generate viewer link
                 const viewerLink = `https://vdo.ninja/?view=${room}`;
-                document.getElementById('viewerLink').innerHTML = 
-                    `Share this link: <a href="${viewerLink}" target="_blank">${viewerLink}</a>`;
+                viewerLinkDiv.innerHTML = `Share this link: <a href="${viewerLink}" target="_blank">${viewerLink}</a>`;
             } catch (error) {
-                console.error('Error starting screenshare:', error);
-                document.getElementById('viewerLink').innerText = 'Failed to start screenshare.';
+                console.error('Screenshare error:', error);
+                if (error.name === 'NotAllowedError') {
+                    errorDiv.innerText = 'Screen capture permission denied. Please allow access and try again.';
+                } else if (error.name === 'NotFoundError') {
+                    errorDiv.innerText = 'No screen capture sources available. Check browser settings.';
+                } else {
+                    errorDiv.innerText = `Failed to start screenshare: ${error.message}`;
+                }
             }
         }
     </script>
