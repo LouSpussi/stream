@@ -11,14 +11,15 @@
         <button onclick="startStream()">Start Screenshare</button>
         <p id="viewerLink" style="margin-top: 10px;"></p>
     </div>
-    <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture;"></iframe>
+    <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
     <script>
         function generateKey() { return Math.random().toString(36).substring(2, 8).toUpperCase(); }
         function startStream() {
             const key = generateKey();
-            document.getElementById('viewerLink').innerHTML = `Viewer link: <a href="https://vdo.ninja/?watch=${key}" target="_blank">https://vdo.ninja/?watch=${key}</a>`;
+            const viewUrl = `https://vdo.ninja/?view=${key}&cleanoutput&autoplay`;
+            document.getElementById('viewerLink').innerHTML = `Viewer link: <a href="${viewUrl}" target="_blank">${viewUrl}</a>. Start streaming in iframe first, then share.`;
             const iframe = document.getElementById('streamFrame');
-            iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput`;
+            iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}`;
             iframe.style.display = 'block';
         }
     </script>
