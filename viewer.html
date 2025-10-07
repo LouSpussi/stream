@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viewer</title>
-    <style>body { margin: 0; } iframe { width: 100%; height: 100vh; border: none; }</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viewer</title>
+  <style>
+    body { margin: 0; }
+    iframe { width: 100%; height: 100vh; border: none; }
+  </style>
 </head>
 <body>
-    <iframe id="viewerFrame" allow="autoplay;"></iframe>
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const viewKey = params.get('view');
-        if (viewKey) {
-            document.getElementById('viewerFrame').src = `https://vdo.ninja/?view=${viewKey}&cleanoutput&autoplay`;
-        }
-    </script>
+  <iframe id="viewerFrame" allow="autoplay; fullscreen; picture-in-picture;"></iframe>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const viewKey = params.get('view');
+
+    if (viewKey) {
+      // Always use proaudio + clean output + autoplay
+      const url = `https://vdo.ninja/?view=${viewKey}&cleanoutput&autoplay&proaudio`;
+      document.getElementById('viewerFrame').src = url;
+    }
+  </script>
 </body>
 </html>
