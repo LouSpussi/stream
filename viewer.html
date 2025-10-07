@@ -16,7 +16,6 @@
     const viewKey = params.get('view');
 
     if (viewKey) {
-      // Always use proaudio + clean output + autoplay
       const url = `https://vdo.ninja/?view=${viewKey}&cleanoutput&autoplay&proaudio`;
       document.getElementById('viewerFrame').src = url;
     }
