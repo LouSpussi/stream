@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer</title>
+    <style>body { margin: 0; } iframe { width: 100%; height: 100vh; border: none; }</style>
+</head>
+<body>
+    <iframe id="viewerFrame" allow="autoplay;"></iframe>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const viewKey = params.get('view');
+        if (viewKey) {
+            document.getElementById('viewerFrame').src = `https://vdo.ninja/?view=${viewKey}&cleanoutput&autoplay`;
+        }
+    </script>
+</body>
+</html>
