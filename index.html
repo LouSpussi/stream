@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Screenshare Live</title>
+  <title>Screen Share Stream</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; font-family: Arial; }
     iframe { width: 100%; height: 100vh; border: none; display: none; }
@@ -13,22 +13,21 @@
 <body>
   <div style="padding: 10px;">
     <button onclick="startStream()">Create Livestream</button>
-    <p id="viewerLink" style="margin-top: 10px;"></p>
-    <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Link</button>
+    <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Viewer Link</button>
   </div>
 
   <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
 
   <script>
+    let viewerLink = '';
+
     function generateKey() {
       return Math.random().toString(36).substring(2, 8).toUpperCase();
     }
 
     function startStream() {
       const key = generateKey();
-      const viewUrl = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
-      const linkElement = `<a href="${viewUrl}" target="_blank">${viewUrl}</a>`;
-      document.getElementById('viewerLink').innerHTML = `Viewer link: ${linkElement}.`;
+      viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
       const iframe = document.getElementById('streamFrame');
@@ -37,8 +36,7 @@
     }
 
     function copyLink() {
-      const linkText = document.getElementById('viewerLink').querySelector('a').href;
-      navigator.clipboard.writeText(linkText).then(() => {
+      navigator.clipboard.writeText(viewerLink).then(() => {
         alert('Link copied to clipboard!');
       });
     }
