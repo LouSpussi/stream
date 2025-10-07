@@ -31,7 +31,7 @@
             const resolution = document.getElementById('resolution').value;
             const fps = document.getElementById('fps').value;
             const audio = document.getElementById('audio').value;
-            const viewUrl = `${window.location.origin}/viewer.html?view=${key}`;
+            const viewUrl = `${window.location.origin}/stream/viewer.html?view=${key}`;
             document.getElementById('viewerLink').innerHTML = `Viewer link: <a href="${viewUrl}" target="_blank">${viewUrl}</a>.`;
             const iframe = document.getElementById('streamFrame');
             iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&resolution=${resolution}&fps=${fps}&proaudio=${audio}`;
