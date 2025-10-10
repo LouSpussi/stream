@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Screen Share Stream</title>
+  <title>Screen Share</title>
   <style>
     html, body { margin: 0; padding: 0; overflow: hidden; font-family: Arial; }
     iframe { width: 100vw; height: 100vh; border: none; display: none; }
@@ -27,25 +27,16 @@
 
     function startStream() {
       const key = generateKey();
-      viewerLink = `https://vdo.ninja/?view=${key}&proaudio`;
+      viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
       const iframe = document.getElementById('streamFrame');
-
-      iframe.src = `https://vdo.ninja/?push=${key}` +
-                   `&screenshare` +               // screen capture
-                   `&view=${key}` +               // viewer link
-                   `&proaudio` +                  // better audio
-                   `&fps=30` +                    // set FPS (can be 30 or 60)
-                   `&bitrate=5000` +              // kbps, adjust to your upload
-                   `&hardwareEncoding=1` +        // enable GPU acceleration
-                   `&ui=small`;                   // compact UI but still shows controls
+      iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&proaudio`;
       iframe.style.display = 'block';
     }
 
     function copyLink() {
       navigator.clipboard.writeText(viewerLink).then(() => {
-        alert('Viewer link copied!');
       });
     }
   </script>
