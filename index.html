@@ -27,16 +27,25 @@
 
     function startStream() {
       const key = generateKey();
-      viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
+      viewerLink = `https://vdo.ninja/?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
       const iframe = document.getElementById('streamFrame');
-      iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&proaudio`;
+
+      iframe.src = `https://vdo.ninja/?push=${key}` +
+                   `&screenshare` +               // screen capture
+                   `&view=${key}` +               // viewer link
+                   `&proaudio` +                  // better audio
+                   `&fps=30` +                    // set FPS (can be 30 or 60)
+                   `&bitrate=5000` +              // kbps, adjust to your upload
+                   `&hardwareEncoding=1` +        // enable GPU acceleration
+                   `&ui=small`;                   // compact UI but still shows controls
       iframe.style.display = 'block';
     }
 
     function copyLink() {
       navigator.clipboard.writeText(viewerLink).then(() => {
+        alert('Viewer link copied!');
       });
     }
   </script>
