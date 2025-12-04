@@ -31,11 +31,10 @@
     </iframe>
   </div>
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
   <script>
-
-    const correctHash = "a8b5f63c49e2e828bc71af6f939b8ecf";
+    const correctHash = "a8b5f63c49e2e828bc71af6f939b8ecf"; 
 
     function checkPass() {
       const input = document.getElementById("passInput").value;
@@ -57,7 +56,6 @@
 
     function startStream() {
       const key = generateKey();
-
       viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
@@ -75,6 +73,5 @@
     }
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </body>
 </html>
