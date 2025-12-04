@@ -10,15 +10,45 @@
     button { margin: 5px; padding: 5px; }
   </style>
 </head>
+
 <body>
-  <div style="padding: 10px; text-align: center;">
-    <button onclick="startStream()">Create Livestream</button>
-    <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Viewer Link</button>
+
+  <div id="loginBox" style="text-align:center; padding-top:40px;">
+    <h3>Enter password to access streaming</h3>
+    <input type="password" id="passInput" placeholder="Password">
+    <button onclick="checkPass()">Enter</button>
+    <p id="wrongPass" style="color:red; display:none;">Wrong password</p>
   </div>
 
-  <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
+  <div id="streamUI" style="display:none;">
+    <div style="padding: 10px; text-align: center;">
+      <button onclick="startStream()">Create Livestream</button>
+      <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Viewer Link</button>
+    </div>
+
+    <iframe id="streamFrame"
+      allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;">
+    </iframe>
+  </div>
+
+
 
   <script>
+
+    const correctHash = "a8b5f63c49e2e828bc71af6f939b8ecf";
+
+    function checkPass() {
+      const input = document.getElementById("passInput").value;
+      const inputHash = CryptoJS.MD5(input).toString();
+
+      if (inputHash === correctHash) {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("streamUI").style.display = "block";
+      } else {
+        document.getElementById("wrongPass").style.display = "block";
+      }
+    }
+
     let viewerLink = '';
 
     function generateKey() {
@@ -27,18 +57,24 @@
 
     function startStream() {
       const key = generateKey();
+
       viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
       const iframe = document.getElementById('streamFrame');
-      iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&proaudio&suppresslocalaudio&aspectratio=landscape&codec=h264&screensharequality=1&screensharefps=30`;
+      iframe.src =
+        `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}` +
+        `&proaudio&suppresslocalaudio&aspectratio=landscape&codec=h264` +
+        `&screensharequality=1&screensharefps=30`;
+
       iframe.style.display = 'block';
     }
 
     function copyLink() {
-      navigator.clipboard.writeText(viewerLink).then(() => {
-      });
+      navigator.clipboard.writeText(viewerLink);
     }
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </body>
 </html>
