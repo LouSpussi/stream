@@ -15,31 +15,37 @@
     <button onclick="startStream()">Create Livestream</button>
     <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Viewer Link</button>
   </div>
-
   <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
-
   <script>
     let viewerLink = '';
-
     function generateKey() {
       return Math.random().toString(36).substring(2, 8).toUpperCase();
     }
-
-    function startStream() {
+    async function hashPassword(password) {
+      const msgUint8 = new TextEncoder().encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    async function startStream() {
+      const password = prompt('Enter password:');
+      if (!password) return;
+      const hashed = await hashPassword(password);
+      const expectedHash = 'LrIPQUa9i3w6hFhNv9iIsLeQBVaSILi2JaoSB7TTyIM=';
+      if (hashed !== expectedHash) {
+        alert('Wrong password');
+        return;
+      }
       const key = generateKey();
       viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
-
       const iframe = document.getElementById('streamFrame');
       iframe.src = `https://vdo.ninja/?push=${key}&screenshare&cleanoutput&view=${key}&proaudio&suppresslocalaudio&aspectratio=landscape&codec=h264&screensharequality=1&screensharefps=30`;
       iframe.style.display = 'block';
     }
-
     function copyLink() {
-      navigator.clipboard.writeText(viewerLink).then(() => {
-      });
+      navigator.clipboard.writeText(viewerLink);
     }
   </script>
 </body>
 </html>
-
