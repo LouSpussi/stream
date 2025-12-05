@@ -15,27 +15,18 @@
     <button onclick="startStream()">Create Livestream</button>
     <button id="copyLink" style="display: none;" onclick="copyLink()">Copy Viewer Link</button>
   </div>
+
   <iframe id="streamFrame" allow="camera *; microphone *; display-capture; fullscreen; picture-in-picture; autoplay;"></iframe>
 
   <script>
     let viewerLink = '';
 
-    async function startStream() {
-      const password = prompt("Enter password:");
-      const res = await fetch("https://houske.cio-bog94.workers.dev/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
-      });
+    function generateKey() {
+      return Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
 
-      const data = await res.json();
-
-      if (data.error) {
-        alert(data.error);
-        return;
-      }
-
-      const key = data.key;
+    function startStream() {
+      const key = generateKey();
       viewerLink = `${window.location.origin}/stream/viewer.html?view=${key}&proaudio`;
       document.getElementById('copyLink').style.display = 'inline';
 
@@ -45,7 +36,8 @@
     }
 
     function copyLink() {
-      navigator.clipboard.writeText(viewerLink);
+      navigator.clipboard.writeText(viewerLink).then(() => {
+      });
     }
   </script>
 </body>
