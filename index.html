@@ -31,7 +31,7 @@
       const password = prompt('Enter password:');
       if (!password) return;
       const hashed = await hashPassword(password);
-      const expectedHash = 'LrIPQUa9i3w6hFhNv9iIsLeQBVaSILi2JaoSB7TTyIM=';
+      const expectedHash = '2eb20f4146bd8b7c3a84584dbfd888b0b79005569220b8b625aa1207b4d3c883';
       if (hashed !== expectedHash) {
         alert('Wrong password');
         return;
